@@ -61,6 +61,17 @@ class Play extends Phaser.Scene {
             })
         })
 
+        // this.needle = this.physics.add.sprite(centerX, centerY, 'needle').setScale(2)
+        this.needles = this.add.group()
+
+        this.spawn1 = this.time.addEvent({
+            delay: 3000,
+            callback: this.spawnNeedle,
+            callbackScope: this,
+            loop: true
+        })
+
+
         // key settings
         cursors = this.input.keyboard.createCursorKeys()
     }
@@ -81,5 +92,10 @@ class Play extends Phaser.Scene {
         }
 
         console.log(`velocity: ${balloon.body.velocity.x}`)
+    }
+
+    spawnNeedle() {
+        let needle = new Needle(this, 150)
+        this.needles.add(needle)
     }
 }
