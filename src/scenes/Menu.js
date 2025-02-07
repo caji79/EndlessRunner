@@ -8,7 +8,9 @@ class Menu extends Phaser.Scene {
         this.load.spritesheet('balloon', './assets/balloon_sheet.png', {
             frameWidth: 16,
             frameHeight: 32
-        })   
+        })
+
+        this.load.image('needle', './assets/pixel_needle.png')
     }
 
     create() {

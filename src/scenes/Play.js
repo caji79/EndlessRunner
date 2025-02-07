@@ -10,9 +10,17 @@ class Play extends Phaser.Scene {
     create() {
         this.cameras.main.setBackgroundColor(0x33ddff)
 
+        // balloon physic settings
         balloon = this.physics.add.sprite(centerX, height/7*6, 'balloon', 0).setOrigin(0.5).setScale(2)
+        balloon.body.setCircle(balloon.width/2)
         balloon.body.setCollideWorldBounds(true)
+        balloon.setDragX(200)
+        balloon.setBounce(0.7)
+        balloon.setMaxVelocity(300, 0)
+        // winning condition
+        balloon.destroyed = false
 
+        // balloon animation
         this.anims.create({
             key: 'idle',
             frameRate: 0,
@@ -44,7 +52,7 @@ class Play extends Phaser.Scene {
         })
 
         this.anims.create({
-            key: 'dead',
+            key: 'death',
             frameRate: 5,
             repeat: -1,
             frames: this.anims.generateFrameNames('balloon', {
@@ -53,21 +61,25 @@ class Play extends Phaser.Scene {
             })
         })
 
+        // key settings
         cursors = this.input.keyboard.createCursorKeys()
     }
 
     update() {
-        if (cursors.left.isDown) {
-            // console.log('left')
-            balloon.play('left')
-            balloon.x -= this.BALLOON_VELOCITY
-        } else if (cursors.right.isDown) {
-            // console.log('right')
-            balloon.play('right')
-            balloon.x += this.BALLOON_VELOCITY
-        } else {
-            console.log('idle')
-            balloon.play('idle')
+        if (!balloon.destroyed) {
+            if (cursors.left.isDown) {
+                // console.log('left')
+                balloon.play('left', true)
+                balloon.body.velocity.x -= this.BALLOON_VELOCITY
+            } else if (cursors.right.isDown) {
+                // console.log('right')
+                balloon.play('right', true)
+                balloon.body.velocity.x += this.BALLOON_VELOCITY
+            } else {
+                balloon.play('idle', true)
+            }            
         }
+
+        console.log(`velocity: ${balloon.body.velocity.x}`)
     }
 }
