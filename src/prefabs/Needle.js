@@ -6,12 +6,13 @@ class Needle extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this)
         this.setVelocityY(velocity)
         this.setImmovable()
-        this.spwanNeedle = true
+        this.setScale(2)
     }
 
-    // update() {
-    //     if (this.spawnNeedle && this.y > centerY) {
-    //         this.addNeedle()
-    //     }
-    // }
+    update() {
+        if (this.y > height+this.height) {
+            this.destroy()
+            console.log('needle destroyed')
+        }
+    }
 }
