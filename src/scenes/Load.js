@@ -11,7 +11,9 @@ class Load extends Phaser.Scene {
         })
 
         this.load.image('needle', './assets/pixel_needle.png')
-    }
+        this.load.image('menuBackground', './assets/menuBackground.png')
+        this.load.image('sky', './assets/sky.png')
+        }
 
     create() {
         // balloon animation

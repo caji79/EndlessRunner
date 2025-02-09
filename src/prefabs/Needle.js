@@ -4,9 +4,12 @@ class Needle extends Phaser.Physics.Arcade.Sprite {
 
         scene.add.existing(this)
         scene.physics.add.existing(this)
+
         this.setVelocityY(velocity)
         this.setImmovable()
         this.setScale(2)
+        this.body.setSize(4, 12)
+        this.body.setOffset(14, this.height-12)
     }
 
     update() {

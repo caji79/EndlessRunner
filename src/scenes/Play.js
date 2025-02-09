@@ -5,18 +5,22 @@ class Play extends Phaser.Scene {
 
     init() {
         this.BALLOON_VELOCITY = 10
-        this.NEEDLE_VELOCITY = 200
+        this.NEEDLE_VELOCITY = 400
     }
 
     create() {
         this.cameras.main.setBackgroundColor(0x33ddff)
+
+        // play background
+        this.sky = this.add.tileSprite(0, 0, 420, 840, 'sky').setOrigin(0, 0)
+        this.skyScrolling = true
 
         // balloon physic settings
         balloon = this.physics.add.sprite(centerX, height/7*6, 'balloon', 0).setOrigin(0.5).setScale(2)
         balloon.body.setCircle(balloon.width/2)
         balloon.body.setCollideWorldBounds(true)
         balloon.setImmovable()
-        balloon.setDragX(200)
+        balloon.setDragX(0.5)
         balloon.setBounce(0.7)
         balloon.setMaxVelocity(300, 0)
         // winning condition
@@ -28,7 +32,7 @@ class Play extends Phaser.Scene {
         })
 
         this.spawnTimer = this.time.addEvent({
-            delay: 2000,
+            delay: 1000,
             callback: this.addNeedle,
             callbackScope: this,
             loop: true
@@ -42,6 +46,10 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        if (this.skyScrolling) {
+            this.sky.tilePositionY -= 1
+        }
+
         if (!balloon.popped) {
             if (cursors.left.isDown) {
                 // console.log('left')
@@ -66,6 +74,7 @@ class Play extends Phaser.Scene {
         balloon.popped = true
         this.spawnTimer.destroy()
         this.physics.pause()
+        this.skyScrolling = false
         balloon.play('death',true).once('animationcomplete', () => {
             // console.log('balloon destroyed')
             balloon.destroy()
