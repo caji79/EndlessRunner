@@ -17,7 +17,7 @@ let config = {
             // debug: true,
         }
     },
-    scene: [ Load, Menu, Play ]
+    scene: [ Load, Menu, Play, GameOver ]
 }
 
 let game = new Phaser.Game(config)
@@ -29,3 +29,4 @@ let centerY = game.config.height/2
 let highScore
 let cursors
 let balloon
+let altitude
