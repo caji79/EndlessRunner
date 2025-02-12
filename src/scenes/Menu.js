@@ -19,13 +19,13 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
         
-        // main title/instruction
+        // main title & instruction
         this.mainTitle = this.add.text(centerX, centerY, 'All the Way Up', menuConfig).setOrigin(0.5)
         menuConfig.fontSize = '20px'
         this.subTitle01 = this.add.text(centerX, centerY+40, 'Use the LEFT & RIGHT to Move', menuConfig).setOrigin(0.5)
         menuConfig.fontSize = '28px'
+        
         this.subTitle02 = this.add.text(centerX, centerY+height/5, 'Press UP to Play', menuConfig).setOrigin(0.5)
-
         this.time.addEvent({
             delay: 500,
             callback: () => {

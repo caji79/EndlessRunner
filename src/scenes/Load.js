@@ -4,24 +4,27 @@ class Load extends Phaser.Scene {
     }
 
     preload() {
-        // load assets
+        // sprite sheet
         this.load.spritesheet('balloon', './assets/balloon_sheet.png', {
             frameWidth: 16,
             frameHeight: 32
         })
 
+        // image
         this.load.image('needle', './assets/pixel_needle.png')
         this.load.image('menuBackground', './assets/menuBackground.png')
         this.load.image('sky', './assets/sky.png')
         this.load.image('wind', './assets/wind.png')
 
+        // sound effect
         this.load.audio('sfx-pop', './assets/pop.wav')
         this.load.audio('sfx-move', './assets/balloonMove.wav')
         this.load.audio('sfx-up', './assets/balloonUp.wav')
         this.load.audio('sfx-wind', './assets/windBlow.wav')
         this.load.audio('sfx-restart', './assets/restart.wav')
 
-        this.load.audio('bgm', './assets/balloon_bgm.wav')
+        // bgm
+        this.load.audio('game-bgm', './assets/game_bgm.mp3')
 
         }
 
@@ -67,7 +70,7 @@ class Load extends Phaser.Scene {
             })
         })
 
-        console.log('from load to menu')
+        // console.log('from load to menu')
         this.scene.start('menuScene')
     }
 }
