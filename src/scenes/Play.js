@@ -13,8 +13,6 @@ class Play extends Phaser.Scene {
 
         // bgm
         this.bgm = this.sound.add('game-bgm', {
-            mute: false,
-            rate: 1,
             volume: 0.5,
             loop: true
         })
@@ -116,7 +114,7 @@ class Play extends Phaser.Scene {
         if (!balloon.popped) {
             // apply wind force to the balloon
             if (this.windBlowing) {
-                balloon.body.velocity.x += this.windStrength
+                balloon.body.velocity.x += this.windStrength   // blow to the right
             }
 
             // player control & balloon animation
@@ -142,7 +140,7 @@ class Play extends Phaser.Scene {
 
         // record the highest score
         if (altitude > highScore) {
-            highScore = altitude
+            highScore = altitude    // replace the old score
         }
     }
     
@@ -160,8 +158,8 @@ class Play extends Phaser.Scene {
         // increase needle falling speed and spawn speed
         if (altitude % 5 == 0) {
             if (this.altitudeTimer.delay > 150 && this.needleVelocity < 570) {
-                this.altitudeTimer.delay -= 50
-                this.needleVelocity += 10
+                this.altitudeTimer.delay -= 50    // height rate increases, balloon is moving up faster
+                this.needleVelocity += 10         // needle falling speed increases
                 // console.log(this.altitudeTimer.delay)
                 // console.log(this.needleVelocity)
             }
