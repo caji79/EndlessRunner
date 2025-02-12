@@ -8,6 +8,14 @@ class Play extends Phaser.Scene {
         this.needleVelocity = 400
         altitude = 0
 
+        // bgm
+        this.bgm = this.sound.add('bgm', {
+            mute: false,
+            volume: 0.5,
+            loop: true
+        })
+        this.bgm.play()
+
         // play background
         this.sky = this.add.tileSprite(0, 0, 420, 840, 'sky').setOrigin(0, 0)
         this.skyScrolling = true
@@ -65,13 +73,31 @@ class Play extends Phaser.Scene {
         // altitude timer
         this.altitudeTimer = this.time.addEvent({
             delay: 1000,
-            callback: this.balloonAltitude,
+            callback: this.balloonHeight,
             callbackScope: this,
             loop: true
         })
 
         // balloon-needle collision
         this.physics.add.collider(balloon, this.needles, this.balloonPop, null, this)
+
+        // wind particle
+        this.windEmitter = this.add.particles(0, 0, 'wind', {
+            speedX: 100,
+            scale: 2,
+            alpha: {start: 1, end: 0},
+            quantity: 1,
+            frequency: 1000,
+            emitting: false
+        })
+
+        // wind blowing time
+        this.windTimer = this.time.addEvent({
+            delay: Phaser.Math.Between(8000, 12000),
+            callback: this.applyWind,
+            callbackScope: this,
+            loop: true
+        })
 
         // key settings
         cursors = this.input.keyboard.createCursorKeys()
@@ -83,6 +109,10 @@ class Play extends Phaser.Scene {
         }
 
         if (!balloon.popped) {
+            if (this.windBlowing) {
+                balloon.body.velocity.x += this.windStrength
+            }
+
             if (cursors.left.isDown) {
                 // console.log('left')
                 balloon.play('left')
@@ -93,7 +123,17 @@ class Play extends Phaser.Scene {
                 balloon.body.velocity.x += this.balloonVelocity
             } else {
                 balloon.play('idle')
-            }            
+            }
+            
+            if (Phaser.Input.Keyboard.JustDown(cursors.left)) {
+                this.sound.play('sfx-move', { volume: 0.5 })
+            } else if (Phaser.Input.Keyboard.JustDown(cursors.right)) {
+                this.sound.play('sfx-move', { volume: 0.5 })
+            }
+        }
+
+        if (altitude > highScore) {
+            highScore = altitude
         }
     }
 
@@ -102,7 +142,7 @@ class Play extends Phaser.Scene {
         this.needles.add(needle)
     }
 
-    balloonAltitude() {
+    balloonHeight() {
         altitude += 1
         this.heightText.setText(`${altitude}m`)
         
@@ -111,27 +151,52 @@ class Play extends Phaser.Scene {
             if (this.altitudeTimer.delay > 150 && this.needleVelocity < 570) {
                 this.altitudeTimer.delay -= 50
                 this.needleVelocity += 10
-                console.log(this.altitudeTimer.delay)
-                console.log(this.needleVelocity)
+                // console.log(this.altitudeTimer.delay)
+                // console.log(this.needleVelocity)
             }
 
             if (this.spawnTimer.delay > 375) {
                 this.spawnTimer.delay -= 75
-                console.log(`spawn: ${this.spawnTimer.delay}`)
-
+                // console.log(`spawn: ${this.spawnTimer.delay}`)
             }
         }
+
     }
 
     balloonPop() {
         balloon.popped = true
+        this.bgm.mute = true
+        this.sound.play('sfx-pop')
         this.spawnTimer.destroy()
+        this.altitudeTimer.destroy()
+        this.windTimer.destroy()
         this.physics.pause()
         this.skyScrolling = false
         balloon.play('death',true).once('animationcomplete', () => {
             // console.log('balloon destroyed')
             balloon.destroy()
-            this.scene.start('gameOverScene')
+            this.cameras.main.fadeOut(2000, 255, 255, 255)
+            this.time.delayedCall(2000, () => {
+                this.scene.start('gameOverScene')
+            })
+        })
+    }
+
+    applyWind() {
+        // console.log('function called')
+        this.windStrength = Phaser.Math.Between(2, 6)
+        let windDuration = 4000
+
+        this.sound.play('sfx-wind')
+        this.windEmitter.setPosition(0, balloon.y)
+        this.windEmitter.start()
+        
+        this.windBlowing = true
+
+        this.time.delayedCall(windDuration, () => {
+            this.windBlowing = false
+            this.windEmitter.stop()
+            // console.log('function stop')
         })
     }
 }

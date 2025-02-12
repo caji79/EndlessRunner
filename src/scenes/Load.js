@@ -13,6 +13,16 @@ class Load extends Phaser.Scene {
         this.load.image('needle', './assets/pixel_needle.png')
         this.load.image('menuBackground', './assets/menuBackground.png')
         this.load.image('sky', './assets/sky.png')
+        this.load.image('wind', './assets/wind.png')
+
+        this.load.audio('sfx-pop', './assets/pop.wav')
+        this.load.audio('sfx-move', './assets/balloonMove.wav')
+        this.load.audio('sfx-up', './assets/balloonUp.wav')
+        this.load.audio('sfx-wind', './assets/windBlow.wav')
+        this.load.audio('sfx-restart', './assets/restart.wav')
+
+        this.load.audio('bgm', './assets/balloon_bgm.wav')
+
         }
 
     create() {

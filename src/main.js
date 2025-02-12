@@ -14,7 +14,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            // debug: true,
+            debug: true,
         }
     },
     scene: [ Load, Menu, Play, GameOver ]
@@ -26,7 +26,7 @@ let width = game.config.width
 let height = game.config.height
 let centerX = game.config.width/2
 let centerY = game.config.height/2
-let highScore
 let cursors
 let balloon
 let altitude
+let highScore = 0

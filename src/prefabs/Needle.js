@@ -15,7 +15,7 @@ class Needle extends Phaser.Physics.Arcade.Sprite {
     update() {
         if (this.y > height+this.height) {
             this.destroy()
-            console.log('needle destroyed')
+            // console.log('needle destroyed')
         }
     }
 }

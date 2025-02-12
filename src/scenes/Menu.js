@@ -43,6 +43,7 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(cursors.up)) {
             this.menuScrolling = true
             this.subTitle02.destroy()
+            this.sound.play('sfx-up')
 
             this.tweens.add({
                 targets: [ this.mainTitle, this.subTitle01],
